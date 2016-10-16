@@ -4,22 +4,23 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "YTcpListner.hpp"
+#include "TcpListener.hpp"
 #include "tcp.hpp"
 
-ymq::YTcpListner::YTcpListner(ymq::IoThread *thread, ymq::YBaseSocket *socket)
+ymq::TcpListener::TcpListener(ymq::IoThread *thread, ymq::YBaseSocket *socket)
     :YOwner(thread)
     ,socket_(socket)
     ,fd_(-1){
 
+    port_ = "8888";
 }
 
-ymq::YTcpListner::~YTcpListner() {
+ymq::TcpListener::~TcpListener() {
 
     fd_ = -1;
 }
 
-void ymq::YTcpListner::in_event() {
+void ymq::TcpListener::in_event() {
 
     fd_t fd = accept();
 
@@ -37,21 +38,20 @@ void ymq::YTcpListner::in_event() {
     //create session
 }
 
-ymq::fd_t ymq::YTcpListner::accept() {
+ymq::fd_t ymq::TcpListener::accept() {
     return 0;
 }
 
-void ymq::YTcpListner::process_plug() {
+void ymq::TcpListener::process_plug() {
 
     handle_ = add_fd(fd_);
     set_pollin(handle_);
 }
 
-int ymq::YTcpListner::set_address(const char *addr) {
+int ymq::TcpListener::set_address(const char *addr) {
 
     sockaddr_in saddr;
     saddr.sin_family = AF_INET;
-
     fd_t s = socket(saddr.sin_family, SOCK_STREAM, IPPROTO_TCP);
 
     if (s == -1)
@@ -71,6 +71,13 @@ int ymq::YTcpListner::set_address(const char *addr) {
     rc = bind(s, (struct sockaddr *)&saddr, sizeof (saddr));
     if (rc == -1)
         return -1;
+
+    if (listen(s, 64) == -1) {
+        close(s);
+        return -1;
+    }
+
+    fd_ = s;
 
     return 0;
 }

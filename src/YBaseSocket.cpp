@@ -5,7 +5,7 @@
 #include "YBaseSocket.hpp"
 #include "YMailbox.hpp"
 #include "YReply.hpp"
-#include "YTcpListner.hpp"
+#include "TcpListener.hpp"
 
 ymq::YBaseSocket::YBaseSocket(ymq::Context *ctx, uint32_t tid, int sid)
     : YOwner(ctx, tid){
@@ -77,7 +77,7 @@ int ymq::YBaseSocket::bind(const char *addr) {
     IoThread *io_thread = choose_io_thread();
 
     // tcp
-    YTcpListner *tcp_listner = new (std::nothrow) YTcpListner(io_thread, this);
+    TcpListener *tcp_listner = new (std::nothrow) TcpListener(io_thread, this);
     assert(tcp_listner != NULL);
 
     int rc = tcp_listner->set_address(addr);

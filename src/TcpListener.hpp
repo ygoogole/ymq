@@ -15,11 +15,11 @@ namespace ymq{
     class YBaseSocket;
     class IoThread;
 
-    class YTcpListner : public YOwner, public YIoObject{
+    class TcpListener : public YOwner, public YIoObject{
 
     public:
-        YTcpListner(ymq::IoThread *thread, ymq::YBaseSocket *socket );
-        ~YTcpListner();
+        TcpListener(ymq::IoThread *thread, ymq::YBaseSocket *socket );
+        ~TcpListener();
 
         int set_address(const char *addr);
 
@@ -38,8 +38,8 @@ namespace ymq{
         fd_t accept();
 
 
-        YTcpListner(const YTcpListner &);
-        const YTcpListner & operator= (const YTcpListner &);
+        TcpListener(const TcpListener &);
+        const TcpListener & operator= (const TcpListener &);
     };
 }
 
