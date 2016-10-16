@@ -5,7 +5,7 @@
 #ifndef YMQ_YIOOBJECT_HPP
 #define YMQ_YIOOBJECT_HPP
 
-//#include "YIOThread.hpp"
+//#include "IoThread.hpp"
 
 #include <stddef.h>
 #include "YPollEvent.hpp"
@@ -14,15 +14,15 @@
 
 namespace ymq{
 
-    class YIOThread;
+    class IoThread;
 
     class YIoObject : public YPollEvent {
 
     public:
-        YIoObject(ymq::YIOThread *thread = NULL);
+        YIoObject(ymq::IoThread *thread = NULL);
         ~YIoObject();
 
-        void plug (ymq::YIOThread *io_thread);
+        void plug (ymq::IoThread *io_thread);
         void unplug ();
 
     protected:

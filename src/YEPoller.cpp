@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include "YEPoller.hpp"
 
-ymq::YEPoller::YEPoller(const ymq::YContext &ctx)
+ymq::YEPoller::YEPoller(const ymq::Context &ctx)
     : ctx_(ctx), stopping_(false){
 
     epoll_fd_ = epoll_create(1);

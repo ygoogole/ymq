@@ -1,17 +1,23 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 project(ymq)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
 
 include_directories(src)
-set(SOURCE_FILES main.cpp src/YyQueue.hpp src/YAtomicPtr.hpp src/YyPipe_base.hpp src/YyPipe.hpp src/YBaseSocket.cpp
-        src/YObject.cpp src/YContext.cpp src/YReaper.cpp
-        src/YConstPool.hpp src/YIOThread.cpp src/YIOThread.hpp src/YBaseMailbox.hpp src/YMailbox.cpp src/YMailbox.hpp src/YCommon.hpp src/YBasePoller.cpp src/YBasePoller.hpp src/YEPoller.cpp src/YEPoller.hpp src/YSignaler.cpp src/YSignaler.hpp src/YIPCtrl.cpp src/YIPCtrl.hpp src/YThread.cpp src/YThread.hpp src/YMutex.hpp src/YOwner.cpp src/YOwner.hpp src/YArray.hpp src/YPipe.cpp src/YPipe.hpp src/YAtomicCounter.hpp src/YTcpListner.cpp src/YTcpListner.hpp src/YIoObject.cpp src/YIoObject.hpp src/tcp.cpp src/tcp.hpp src/YOption.cpp src/YOption.hpp src/YRouter.cpp src/YRouter.hpp src/YReply.cpp src/YReply.hpp src/YMsg.cpp src/YMsg.hpp)
+file(GLOB SRCS
+    *.cpp
+    *.hpp
+    src/*.cpp
+    src/*.hpp
+    )
+
+#set(SOURCE_FILES main.cpp src/YyQueue.hpp src/YAtomicPtr.hpp src/YyPipe_base.hpp src/YyPipe.hpp src/YBaseSocket.cpp
+#        src/YObject.cpp src/Context.cpp src/YReaper.cpp
+#        src/YConstPool.hpp src/YIOThread.cpp src/YIOThread.hpp src/YBaseMailbox.hpp src/YMailbox.cpp src/YMailbox.hpp src/YCommon.hpp src/YBasePoller.cpp src/YBasePoller.hpp src/YEPoller.cpp src/YEPoller.hpp src/YSignaler.cpp src/YSignaler.hpp src/YIPCtrl.cpp src/YIPCtrl.hpp src/YThread.cpp src/YThread.hpp src/YMutex.hpp src/YOwner.cpp src/YOwner.hpp src/YArray.hpp src/YPipe.cpp src/YPipe.hpp src/YAtomicCounter.hpp src/YTcpListner.cpp src/YTcpListner.hpp src/YIoObject.cpp src/YIoObject.hpp src/tcp.cpp src/tcp.hpp src/YOption.cpp src/YOption.hpp src/YRouter.cpp src/YRouter.hpp src/YReply.cpp src/YReply.hpp src/YMsg.cpp src/YMsg.hpp)
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 
-
-add_executable(ymq ${SOURCE_FILES})
+add_executable(ymq ${SRCS})
 
 #add_definitions(-D_PTHREADS)
 

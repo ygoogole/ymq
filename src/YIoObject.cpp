@@ -3,9 +3,9 @@
 //
 
 #include "YIoObject.hpp"
-#include "YIOThread.hpp"
+#include "IoThread.hpp"
 
-ymq::YIoObject::YIoObject(ymq::YIOThread *thread)
+ymq::YIoObject::YIoObject(ymq::IoThread *thread)
     :poller_(NULL){
 
     if (thread)
@@ -16,7 +16,7 @@ ymq::YIoObject::~YIoObject() {
 
 }
 
-void ymq::YIoObject::plug(ymq::YIOThread *io_thread) {
+void ymq::YIoObject::plug(ymq::IoThread *io_thread) {
 
     poller_ = io_thread->get_poller();
 }

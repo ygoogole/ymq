@@ -4,7 +4,7 @@
 
 #include "YReply.hpp"
 
-ymq::YReply::YReply(ymq::YContext *parent, uint32_t tid, int sid)
+ymq::YReply::YReply(ymq::Context *parent, uint32_t tid, int sid)
     :YRouter(parent, tid, sid){
 
 }

@@ -6,7 +6,7 @@
 #define YMQ_YEPOLLER_HPP
 
 #include "YBasePoller.hpp"
-#include "YContext.hpp"
+#include "Context.hpp"
 #include <sys/epoll.h>
 #include "YPollEvent.hpp"
 
@@ -18,7 +18,7 @@ namespace ymq{
 
         typedef void* handle_t;
 
-        YEPoller(const ymq::YContext& ctx);
+        YEPoller(const ymq::Context& ctx);
         ~YEPoller();
 
         handle_t add_fd(fd_t fd, ymq::YPollEvent* event);
@@ -38,7 +38,7 @@ namespace ymq{
         static void worker_routine( void* args );
         void loop();
 
-        const YContext& ctx_;
+        const Context& ctx_;
         fd_t epoll_fd_;
 
         struct epoll_entry_t{

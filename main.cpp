@@ -4,7 +4,7 @@
 #include "YyPipe_base.hpp"
 #include "YCommand.hpp"
 #include "YPollEvent.hpp"
-#include "YContext.hpp"
+#include "Context.hpp"
 #include "YBaseSocket.hpp"
 #include "YSignaler.hpp"
 #include "YMutex.hpp"
@@ -15,7 +15,7 @@ using namespace std;
 
 int main() {
 
-    ymq::YContext ctx(1);
+    ymq::Context ctx(1);
 
     cout << "Hello, World!" << endl;
     return 0;

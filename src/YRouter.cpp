@@ -4,7 +4,7 @@
 
 #include "YRouter.hpp"
 
-ymq::YRouter::YRouter(ymq::YContext *parent, uint32_t tid, int sid)
+ymq::YRouter::YRouter(ymq::Context *parent, uint32_t tid, int sid)
     :YBaseSocket(parent, tid, sid){
 
 }

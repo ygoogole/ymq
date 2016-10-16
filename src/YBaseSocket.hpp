@@ -25,7 +25,7 @@ namespace ymq{
 
     public:
 
-        YBaseSocket(ymq::YContext *ctx, uint32_t tid, int sid);
+        YBaseSocket(ymq::Context *ctx, uint32_t tid, int sid);
         virtual ~YBaseSocket();
 
         virtual void in_event() override ;
@@ -38,7 +38,7 @@ namespace ymq{
         virtual void pipe_terminated (ymq::YPipe *pipe);
 
         //  Create a socket of a specified type.
-        static YBaseSocket *create (int type, ymq::YContext *parent,
+        static YBaseSocket *create (int type, ymq::Context *parent,
                                     uint32_t tid, int sid);
         YBaseMailbox *get_mailbox();
         int bind(const char *addr);

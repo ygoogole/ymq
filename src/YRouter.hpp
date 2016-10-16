@@ -14,7 +14,7 @@ namespace ymq{
     class YRouter : public YBaseSocket{
 
     public:
-        YRouter(ymq::YContext *parent, uint32_t tid, int sid);
+        YRouter(ymq::Context *parent, uint32_t tid, int sid);
 
         virtual int xsend (ymq::YMsg *msg);
         virtual int xrecv (ymq::YMsg *msg);

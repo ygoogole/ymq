@@ -2,8 +2,8 @@
 // Created by i059483 on 9/7/15.
 //
 
-#ifndef YMQ_YCONTEXT_HPP
-#define YMQ_YCONTEXT_HPP
+#ifndef YMQ_CONTEXT_HPP
+#define YMQ_CONTEXT_HPP
 
 #include "YConstPool.hpp"
 #include "YMailbox.hpp"
@@ -17,14 +17,14 @@
 namespace ymq{
 
     class YBaseSocket;
-    class YIOThread;
+    class IoThread;
 
-    class YContext {
+    class Context {
 
     public:
 
-        YContext(int thread_num, int max_thread = ymq::YConstPool::kMaxThreadNumber);
-        ~YContext();
+        Context(int thread_num, int max_thread = ymq::YConstPool::kMaxThreadNumber);
+        ~Context();
 
         YBaseSocket* create_socket( ymq::YConstPool::SocketType type);
         void start_thread(YThread &thread, thread_fn *tfn, void* arg) const;
@@ -39,23 +39,23 @@ namespace ymq{
 
         YBaseMailbox **slots_;
 
-        //YContext ( int number_thread, int max_thread = ymq::YConstPool::kMaxThreadNumber );
+        //Context ( int number_thread, int max_thread = ymq::YConstPool::kMaxThreadNumber );
 
-        YIOThread *choose_io_thread();
+        IoThread *choose_io_thread();
 
     private:
 
         static YAtomicCounter max_sock_counter_;
 
-        std::vector<YIOThread*> io_threads_;
+        std::vector<IoThread*> io_threads_;
         std::vector<uint32_t> empty_slots_;
         YArray<YBaseSocket> sockets_;
 
         YMutex slot_sync_;
         //YMailbox mailbox_slots[ymq::YConstPool::kMaxThreadNumber];
 
-        YContext (const YContext &);
-        const YContext& operator= (const YContext&);
+        Context (const Context &);
+        const Context& operator= (const Context&);
     };
 }
 

@@ -7,18 +7,18 @@
 
 #include "YOwner.hpp"
 #include "YIoObject.hpp"
-//#include "YIOThread.hpp"
+//#include "IoThread.hpp"
 #include "YOption.hpp"
 
 namespace ymq{
 
     class YBaseSocket;
-    class YIOThread;
+    class IoThread;
 
     class YTcpListner : public YOwner, public YIoObject{
 
     public:
-        YTcpListner(ymq::YIOThread *thread, ymq::YBaseSocket *socket );
+        YTcpListner(ymq::IoThread *thread, ymq::YBaseSocket *socket );
         ~YTcpListner();
 
         int set_address(const char *addr);

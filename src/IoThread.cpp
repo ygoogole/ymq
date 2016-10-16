@@ -3,10 +3,10 @@
 //
 
 #include <sys/errno.h>
-#include "YIOThread.hpp"
+#include "IoThread.hpp"
 #include "YCommand.hpp"
 
-ymq::YIOThread::YIOThread( ymq::YContext *ctx, uint32_t tid )
+ymq::IoThread::IoThread( ymq::Context *ctx, uint32_t tid )
     :YObject(ctx, tid){
 
     epoller_ = new (std::nothrow) ymq::YEPoller(*ctx);
@@ -16,13 +16,13 @@ ymq::YIOThread::YIOThread( ymq::YContext *ctx, uint32_t tid )
 
 }
 
-ymq::YIOThread::~YIOThread() {
+ymq::IoThread::~IoThread() {
 
     delete epoller_;
     epoller_ = nullptr;
 }
 
-void ymq::YIOThread::in_event(){
+void ymq::IoThread::in_event(){
 
     YCommand cmd;
     int rc = mailbox_.recv(&cmd, 0);
@@ -38,40 +38,40 @@ void ymq::YIOThread::in_event(){
 
 }
 
-void ymq::YIOThread::out_event() {
+void ymq::IoThread::out_event() {
     // never called
 }
 
-void ymq::YIOThread::timer_event(int id) {
+void ymq::IoThread::timer_event(int id) {
 }
 
-void ymq::YIOThread::process_plug() {
+void ymq::IoThread::process_plug() {
     YObject::process_plug();
 }
 
-void ymq::YIOThread::process_bind() {
+void ymq::IoThread::process_bind() {
     YObject::process_bind();
 }
 
-void ymq::YIOThread::start() {
+void ymq::IoThread::start() {
 
     epoller_->start();
 }
 
-void ymq::YIOThread::stop() {
+void ymq::IoThread::stop() {
 
 }
 
-ymq::YMailbox *ymq::YIOThread::get_mailbox() {
+ymq::YMailbox *ymq::IoThread::get_mailbox() {
     return &mailbox_;
 }
 
-void ymq::YIOThread::process_stop() {
+void ymq::IoThread::process_stop() {
 
     epoller_->rm_fd (mailbox_handle_);
     epoller_->stop ();
 }
 
-ymq::YEPoller *ymq::YIOThread::get_poller() {
+ymq::YEPoller *ymq::IoThread::get_poller() {
     return epoller_;
 }

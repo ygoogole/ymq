@@ -4,13 +4,13 @@
 
 #include "YOwner.hpp"
 
-ymq::YOwner::YOwner(ymq::YContext *parent, uint32_t tid)
+ymq::YOwner::YOwner(ymq::Context *parent, uint32_t tid)
     :YObject(parent, tid)
     ,owner_(nullptr){
 
 }
 
-ymq::YOwner::YOwner(ymq::YIOThread *io_thread)
+ymq::YOwner::YOwner(ymq::IoThread *io_thread)
     :YObject((YObject *)io_thread)
     ,owner_(nullptr){
 

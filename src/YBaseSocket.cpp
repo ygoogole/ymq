@@ -7,7 +7,7 @@
 #include "YReply.hpp"
 #include "YTcpListner.hpp"
 
-ymq::YBaseSocket::YBaseSocket(ymq::YContext *ctx, uint32_t tid, int sid)
+ymq::YBaseSocket::YBaseSocket(ymq::Context *ctx, uint32_t tid, int sid)
     : YOwner(ctx, tid){
 
     mailbox_ = new YMailbox();
@@ -54,7 +54,7 @@ void ymq::YBaseSocket::pipe_terminated(ymq::YPipe *pipe) {
 
 }
 
-ymq::YBaseSocket *ymq::YBaseSocket::create(int type, ymq::YContext *parent, uint32_t tid, int sid) {
+ymq::YBaseSocket *ymq::YBaseSocket::create(int type, ymq::Context *parent, uint32_t tid, int sid) {
 
     switch (type){
 
@@ -74,7 +74,7 @@ ymq::YBaseMailbox *ymq::YBaseSocket::get_mailbox() {
 
 int ymq::YBaseSocket::bind(const char *addr) {
 
-    YIOThread *io_thread = choose_io_thread();
+    IoThread *io_thread = choose_io_thread();
 
     // tcp
     YTcpListner *tcp_listner = new (std::nothrow) YTcpListner(io_thread, this);
@@ -107,3 +107,8 @@ int ymq::YBaseSocket::recv(ymq::YMsg *msg, int flags_) {
     int rc = xrecv(msg);
     return 0;
 }
+
+int ymq::YBaseSocket::xrecv (ymq::YMsg *msg) {
+    return 0;
+}
+

@@ -6,19 +6,19 @@
 #define YMQ_YOWNER_HPP
 
 #include "YObject.hpp"
-//#include "YContext.hpp"
+//#include "Context.hpp"
 
 namespace ymq {
 
-    class YIOThread;
-    class YContext;
+    class IoThread;
+    class Context;
 
     class YOwner : public YObject {
 
     public:
 
-        YOwner(YContext *parent, uint32_t tid);
-        YOwner(YIOThread *io_thread);
+        YOwner(Context *parent, uint32_t tid);
+        YOwner(IoThread *io_thread);
 
         virtual ~YOwner();
 

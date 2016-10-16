@@ -7,7 +7,7 @@
 #include "YTcpListner.hpp"
 #include "tcp.hpp"
 
-ymq::YTcpListner::YTcpListner(ymq::YIOThread *thread, ymq::YBaseSocket *socket)
+ymq::YTcpListner::YTcpListner(ymq::IoThread *thread, ymq::YBaseSocket *socket)
     :YOwner(thread)
     ,socket_(socket)
     ,fd_(-1){

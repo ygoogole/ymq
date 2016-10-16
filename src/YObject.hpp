@@ -8,29 +8,29 @@
 #include <stdint-gcc.h>
 #include "YCommand.hpp"
 //#include "YOwner.hpp"
-//#include "YContext.hpp"
+//#include "Context.hpp"
 
 namespace ymq{
 
-    class YContext;
+    class Context;
     class YCommand;
-    class YIOThread;
+    class IoThread;
     class YOwner;
 
     class YObject {
 
     public:
 
-        YObject(ymq::YContext *ctx, uint32_t tid);
+        YObject(ymq::Context *ctx, uint32_t tid);
         YObject(YObject *parent);
 
         virtual ~YObject();
 
         uint32_t get_tid();
         void set_tid(uint32_t tid);
-        YIOThread* choose_io_thread();
+        IoThread* choose_io_thread();
 
-        YContext* get_context();
+        Context* get_context();
         void process_command(ymq::YCommand &cmd);
         //void send_command();
 
@@ -45,7 +45,7 @@ namespace ymq{
 
     private:
 
-        ymq::YContext *ctx_;
+        ymq::Context *ctx_;
         uint32_t tid_;
 
 

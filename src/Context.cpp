@@ -5,30 +5,30 @@
 #include <stddef.h>
 #include <new>
 #include <assert.h>
-#include "YContext.hpp"
-#include "YIOThread.hpp"
+#include "Context.hpp"
+#include "IoThread.hpp"
 #include "YBaseSocket.hpp"
 
-ymq::YContext::YContext( int thread_count, int max_thread )
+ymq::Context::Context( int thread_count, int max_thread )
     :thread_count_(thread_count),
     max_thread_(max_thread){
 
 
 }
 
-ymq::YContext::~YContext() {
+ymq::Context::~Context() {
 
 }
 
-void ymq::YContext::set_max_thread (int max_thread) {
+void ymq::Context::set_max_thread (int max_thread) {
     max_thread_ = max_thread;
 }
 
-int ymq::YContext::get_max_thread () {
+int ymq::Context::get_max_thread () {
     return max_thread_;
 }
 
-ymq::YBaseSocket *ymq::YContext::create_socket(ymq::YConstPool::SocketType type) {
+ymq::YBaseSocket *ymq::Context::create_socket(ymq::YConstPool::SocketType type) {
 
     // create socket, io thread and start polling
 
@@ -42,7 +42,7 @@ ymq::YBaseSocket *ymq::YContext::create_socket(ymq::YConstPool::SocketType type)
 
     for (int i = 2; i < thread_count_ + 2; i++){
 
-        YIOThread* io_thread = new (std::nothrow) YIOThread(this, i);
+        IoThread* io_thread = new (std::nothrow) IoThread(this, i);
         assert(io_thread != nullptr);
 
         io_threads_.push_back(io_thread);
@@ -73,19 +73,19 @@ ymq::YBaseSocket *ymq::YContext::create_socket(ymq::YConstPool::SocketType type)
     return socket;
 }
 
-void ymq::YContext::start_thread(ymq::YThread &thread, ymq::thread_fn *tfn, void *arg) const{
+void ymq::Context::start_thread(ymq::YThread &thread, ymq::thread_fn *tfn, void *arg) const{
 
     thread.start(tfn, arg);
     //set thread parameter like priority, scheduling policy
 }
 
-void ymq::YContext::send_command(uint32_t tid, const ymq::YCommand &cmd) {
+void ymq::Context::send_command(uint32_t tid, const ymq::YCommand &cmd) {
 
     slots_[tid]->send (cmd);
 }
 
-ymq::YAtomicCounter ymq::YContext::max_sock_counter_;
+ymq::YAtomicCounter ymq::Context::max_sock_counter_;
 
-ymq::YIOThread *ymq::YContext::choose_io_thread() {
+ymq::IoThread *ymq::Context::choose_io_thread() {
     return io_threads_[0];
 }

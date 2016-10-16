@@ -3,11 +3,11 @@
 //
 
 #include "YObject.hpp"
-#include "YContext.hpp"
+#include "Context.hpp"
 #include "YCommand.hpp"
 #include "YConstPool.hpp"
 
-ymq::YObject::YObject(ymq::YContext *ctx, uint32_t tid)
+ymq::YObject::YObject(ymq::Context *ctx, uint32_t tid)
     :ctx_(ctx),
     tid_(tid){
 
@@ -31,7 +31,7 @@ void ymq::YObject::set_tid(uint32_t tid) {
     tid_ = tid;
 }
 
-ymq::YContext *ymq::YObject::get_context() {
+ymq::Context *ymq::YObject::get_context() {
     return ctx_;
 }
 
@@ -72,7 +72,7 @@ void ymq::YObject::send_command(ymq::YCommand &cmd) {
     ctx_->send_command (cmd.destination->get_tid (), cmd);
 }
 
-ymq::YIOThread *ymq::YObject::choose_io_thread() {
+ymq::IoThread *ymq::YObject::choose_io_thread() {
     return ctx_->choose_io_thread();
 }
 
