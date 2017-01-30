@@ -1,7 +1,3 @@
-//
-// Created by i059483 on 10/4/15.
-//
-
 #ifndef YMQ_YIPCTRL_HPP
 #define YMQ_YIPCTRL_HPP
 

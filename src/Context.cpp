@@ -1,35 +1,48 @@
-//
-// Created by i059483 on 9/7/15.
-//
-
 #include <stddef.h>
 #include <new>
 #include <assert.h>
 #include "Context.hpp"
 #include "IoThread.hpp"
-#include "YBaseSocket.hpp"
+#include "SocketBase.hpp"
 
-ymq::Context::Context( int thread_count, int max_thread )
+using namespace ymq;
+
+Context::Context( int thread_count, int max_thread )
     :thread_count_(thread_count),
     max_thread_(max_thread){
 
 
 }
 
-ymq::Context::~Context() {
+Context::~Context() {
 
 }
 
-void ymq::Context::set_max_thread (int max_thread) {
+void Context::set_max_thread (int max_thread) {
     max_thread_ = max_thread;
 }
 
-int ymq::Context::get_max_thread () {
+int Context::get_max_thread () {
     return max_thread_;
 }
 
-ymq::YBaseSocket *ymq::Context::create_socket(ymq::YConstPool::SocketType type) {
+IoThread * Context::getIoThread() {
+    if (io_threads_.empty()) {
+        return nullptr;
+    } else {
+        return io_threads_[0].get();
+    }
+}
 
+SocketBase *Context::create_socket(unsigned type) {
+
+    auto io_thread = std::make_shared<IoThread>(this, io_threads_.size());
+    io_threads_.push_back(io_thread);
+    io_thread->start();
+
+    socket_.reset(new (std::nothrow) SocketBase(this, 0));
+
+/*
     // create socket, io thread and start polling
 
     // tid 0, 1 reserved, io_thread starts from 2
@@ -71,21 +84,16 @@ ymq::YBaseSocket *ymq::Context::create_socket(ymq::YConstPool::SocketType type) 
     slot_sync_.unlock();
 
     return socket;
+    */
+
+    return socket_.get();
 }
 
-void ymq::Context::start_thread(ymq::YThread &thread, ymq::thread_fn *tfn, void *arg) const{
+void Context::send_command(uint32_t tid, const YCommand &cmd) {
 
-    thread.start(tfn, arg);
-    //set thread parameter like priority, scheduling policy
+    //slots_[tid]->send (cmd);
 }
 
-void ymq::Context::send_command(uint32_t tid, const ymq::YCommand &cmd) {
-
-    slots_[tid]->send (cmd);
-}
-
-ymq::YAtomicCounter ymq::Context::max_sock_counter_;
-
-ymq::IoThread *ymq::Context::choose_io_thread() {
-    return io_threads_[0];
+IoThread *Context::choose_io_thread() {
+    return nullptr; 
 }

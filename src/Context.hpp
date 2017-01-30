@@ -1,23 +1,17 @@
-//
-// Created by i059483 on 9/7/15.
-//
-
 #ifndef YMQ_CONTEXT_HPP
 #define YMQ_CONTEXT_HPP
 
 #include "YConstPool.hpp"
-#include "YMailbox.hpp"
-#include "YThread.hpp"
-#include "YAtomicCounter.hpp"
-#include "YArray.hpp"
-#include "YBaseSocket.hpp"
+#include "SocketBase.hpp"
 #include <vector>
 #include <stdint.h>
+#include <memory>
 
 namespace ymq{
 
     class YBaseSocket;
     class IoThread;
+    class SocketBase;
 
     class Context {
 
@@ -26,39 +20,34 @@ namespace ymq{
         Context(int thread_num, int max_thread = ymq::YConstPool::kMaxThreadNumber);
         ~Context();
 
-        YBaseSocket* create_socket( ymq::YConstPool::SocketType type);
-        void start_thread(YThread &thread, thread_fn *tfn, void* arg) const;
+        SocketBase* create_socket(unsigned type);
         void set_max_thread ( int max_thread );
         int get_max_thread ();
 
         void send_command (uint32_t tid, const YCommand &cmd);
+        IoThread* getIoThread();
 
         int thread_count_;
         int max_thread_;
         int slot_count_;
 
-        YBaseMailbox **slots_;
+        Mailbox **slots_;
 
         //Context ( int number_thread, int max_thread = ymq::YConstPool::kMaxThreadNumber );
 
         IoThread *choose_io_thread();
+        std::shared_ptr<SocketBase> socket_;
 
     private:
 
-        static YAtomicCounter max_sock_counter_;
-
-        std::vector<IoThread*> io_threads_;
+        std::vector<std::shared_ptr<IoThread>> io_threads_;
         std::vector<uint32_t> empty_slots_;
-        YArray<YBaseSocket> sockets_;
 
-        YMutex slot_sync_;
         //YMailbox mailbox_slots[ymq::YConstPool::kMaxThreadNumber];
 
-        Context (const Context &);
-        const Context& operator= (const Context&);
+        Context (const Context &) = delete;
+        const Context& operator= (const Context&) = delete;
     };
 }
 
-
-
-#endif //YMQ_YCONTEXT_HPP
+#endif //YMQ_CONTEXT_HPP

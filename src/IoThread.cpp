@@ -1,29 +1,29 @@
-//
-// Created by i059483 on 9/20/15.
-//
-
 #include <sys/errno.h>
 #include "IoThread.hpp"
 #include "YCommand.hpp"
 
-ymq::IoThread::IoThread( ymq::Context *ctx, uint32_t tid )
-    :YObject(ctx, tid){
+using namespace ymq;
 
-    epoller_ = new (std::nothrow) ymq::YEPoller(*ctx);
+namespace ymq {
 
-    mailbox_handle_ = epoller_->add_fd(mailbox_.get_fd(), this);
-    epoller_->set_pollin(mailbox_handle_);
+IoThread::IoThread( Context *ctx, uint32_t idx)
+    : EpollerBase()
+    , ctx_(ctx)
+{
+    epoller_ = new (std::nothrow) Epoller();
 
+    mailbox_handle_ = epoller_->addFd(mailbox_.getFd(), this);
+    epoller_->setPollin(mailbox_handle_);
+    // mailbox handle need deallocated?
 }
 
-ymq::IoThread::~IoThread() {
-
+IoThread::~IoThread() {
     delete epoller_;
     epoller_ = nullptr;
 }
 
-void ymq::IoThread::in_event(){
-
+void IoThread::inEvent() {
+/*
     YCommand cmd;
     int rc = mailbox_.recv(&cmd, 0);
 
@@ -35,43 +35,46 @@ void ymq::IoThread::in_event(){
 
         rc = mailbox_.recv(&cmd, 0);
     }
-
+*/
 }
 
-void ymq::IoThread::out_event() {
+Epoller *IoThread::getPoller() {
+    return epoller_;
+}
+
+const Mailbox& IoThread::getMailbox() {
+    return mailbox_;
+}
+
+void IoThread::outEvent() {
     // never called
 }
 
-void ymq::IoThread::timer_event(int id) {
-}
-
-void ymq::IoThread::process_plug() {
-    YObject::process_plug();
-}
-
-void ymq::IoThread::process_bind() {
-    YObject::process_bind();
-}
-
-void ymq::IoThread::start() {
+void IoThread::start() {
 
     epoller_->start();
 }
 
-void ymq::IoThread::stop() {
-
+void IoThread::stop() {
+    epoller_->stop();
 }
 
-ymq::YMailbox *ymq::IoThread::get_mailbox() {
-    return &mailbox_;
-}
 
-void ymq::IoThread::process_stop() {
+} // ymq
+
+/*
+void IoThread::process_stop() {
 
     epoller_->rm_fd (mailbox_handle_);
     epoller_->stop ();
 }
-
-ymq::YEPoller *ymq::IoThread::get_poller() {
-    return epoller_;
+void IoThread::timer_event(int id) {
 }
+
+void IoThread::process_plug() {
+}
+
+void IoThread::process_bind() {
+}
+*/
+

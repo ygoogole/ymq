@@ -1,26 +1,36 @@
-//
-// Created by i059483 on 10/17/15.
-//
+#ifndef LOG_DISABLE
+#include <iostream>
+#endif
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <string.h>
 #include "TcpListener.hpp"
 #include "tcp.hpp"
+#include "Session.hpp"
+#include "Engine.hpp"
 
-ymq::TcpListener::TcpListener(ymq::IoThread *thread, ymq::YBaseSocket *socket)
-    :YOwner(thread)
-    ,socket_(socket)
-    ,fd_(-1){
+using namespace ymq;
+
+namespace ymq {
+
+TcpListener::TcpListener(IoThread *thread, SocketBase *socket)
+    : IoObject(thread)
+    , socket_(socket)
+    , fd_(-1) {
 
     port_ = "8888";
 }
 
-ymq::TcpListener::~TcpListener() {
+TcpListener::~TcpListener() {
 
     fd_ = -1;
 }
 
-void ymq::TcpListener::in_event() {
+void TcpListener::inEvent() {
+#ifndef LOG_DISABLE
+    std::cout << "tcp listener in event " << std::endl;
+#endif
 
     fd_t fd = accept();
 
@@ -28,27 +38,63 @@ void ymq::TcpListener::in_event() {
         return;
 
     tune_tcp_socket (fd);
-    tune_tcp_keepalives (fd, options_.tcp_keepalive_, options_.tcp_keepalive_cnt_, options_.tcp_keepalive_idle_, options_.tcp_keepalive_intvl_);
-    tune_tcp_retransmit_timeout (fd, options_.tcp_retransmit_timeout_);
-
-    socket_->set_fd(fd);
+    tune_tcp_keepalives (fd, -1, -1, -1, -1); 
+    //tune_tcp_keepalives (fd, options_.tcp_keepalive_, options_.tcp_keepalive_cnt_, options_.tcp_keepalive_idle_, options_.tcp_keepalive_intvl_);
+    //tune_tcp_retransmit_timeout (fd, options_.tcp_retransmit_timeout_);
 
     //create engine
+    Engine *engine = new (std::nothrow) Engine(io_thread_, socket_, 
+            addr_);
+    assert(engine);
+    
 
     //create session
+    Session *sess = new (std::nothrow) Session(io_thread_, socket_, 
+            addr_);
+    assert(sess);
+
+    //set ref
+    engine->setSession(sess);
+    sess->setEngine(engine);
+
+    // setup queue between session and engine
+
+    //poll engine on accepted socket
+    engine->plug(fd);
 }
 
-ymq::fd_t ymq::TcpListener::accept() {
-    return 0;
+fd_t TcpListener::accept() {
+
+#ifndef LOG_DISABLE
+    std::cout << "tcp listener accepted " << std::endl;
+#endif
+
+    struct sockaddr_storage ss;
+    socklen_t len = sizeof(ss);
+    memset(&ss, 0, len);
+
+    fd_t sock = ::accept4 (fd_, (struct sockaddr *) &ss, &len, SOCK_CLOEXEC);
+
+    return sock;
 }
 
-void ymq::TcpListener::process_plug() {
+/*
+void TcpListener::process_plug() {
 
     handle_ = add_fd(fd_);
     set_pollin(handle_);
 }
+*/
+int TcpListener::startListening(const std::string &addr) {
 
-int ymq::TcpListener::set_address(const char *addr) {
+    size_t pos = addr.find(':');
+    if (pos == std::string::npos) {
+        return -1; 
+    }
+
+    ip_ = addr.substr(0, pos);
+    port_ = addr.substr(pos+1);
+    addr_ = addr;
 
     sockaddr_in saddr;
     saddr.sin_family = AF_INET;
@@ -58,8 +104,7 @@ int ymq::TcpListener::set_address(const char *addr) {
         return -1;
 
     saddr.sin_addr.s_addr = INADDR_ANY;
-    saddr.sin_port = htons(atoi(port_));
-
+    saddr.sin_port = htons(atoi(port_.c_str()));
 
     //reuse address
     int flag = 1;
@@ -79,5 +124,10 @@ int ymq::TcpListener::set_address(const char *addr) {
 
     fd_ = s;
 
+    handle_ = addFd(fd_);
+    setPollin(handle_);
+
     return 0;
 }
+
+} // ns: ymq

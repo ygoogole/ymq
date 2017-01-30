@@ -73,7 +73,7 @@ ymq::YBaseMailbox *ymq::YBaseSocket::get_mailbox() {
 }
 
 int ymq::YBaseSocket::bind(const char *addr) {
-
+/*
     IoThread *io_thread = choose_io_thread();
 
     // tcp
@@ -84,7 +84,9 @@ int ymq::YBaseSocket::bind(const char *addr) {
     assert(rc == 0);
 
     add_endpoint(addr, (YOwner* ) tcp_listner, NULL);
+*/
 
+    return 0;
 }
 
 void ymq::YBaseSocket::set_fd(ymq::fd_t fd) {

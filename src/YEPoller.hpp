@@ -9,6 +9,7 @@
 #include "Context.hpp"
 #include <sys/epoll.h>
 #include "YPollEvent.hpp"
+#include "YThread.hpp"
 
 namespace ymq{
 

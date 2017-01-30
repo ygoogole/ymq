@@ -1,7 +1,3 @@
-//
-// Created by i059483 on 10/4/15.
-//
-
 #include "YSignaler.hpp"
 #include "YIPCtrl.hpp"
 #include <sys/eventfd.h>

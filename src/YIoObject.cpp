@@ -18,7 +18,7 @@ ymq::YIoObject::~YIoObject() {
 
 void ymq::YIoObject::plug(ymq::IoThread *io_thread) {
 
-    poller_ = io_thread->get_poller();
+    //poller_ = io_thread->getPoller();
 }
 
 void ymq::YIoObject::unplug() {

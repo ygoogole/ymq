@@ -1,49 +1,43 @@
-//
-// Created by i059483 on 10/17/15.
-//
+#ifndef YMQ_TCPLISTNER_HPP
+#define YMQ_TCPLISTNER_HPP
 
-#ifndef YMQ_YTCPLISTNER_HPP
-#define YMQ_YTCPLISTNER_HPP
-
-#include "YOwner.hpp"
-#include "YIoObject.hpp"
-//#include "IoThread.hpp"
-#include "YOption.hpp"
+#include <string>
+#include "IoObject.hpp"
+#include "IoThread.hpp"
 
 namespace ymq{
 
-    class YBaseSocket;
+    class SocketBase;
     class IoThread;
 
-    class TcpListener : public YOwner, public YIoObject{
+    class TcpListener : public IoObject {
 
     public:
-        TcpListener(ymq::IoThread *thread, ymq::YBaseSocket *socket );
+        TcpListener(IoThread *thread, SocketBase *socket );
         ~TcpListener();
 
-        int set_address(const char *addr);
+        int startListening(const std::string &addr);
 
     private:
 
-        YBaseSocket *socket_;
+        SocketBase *socket_;
         fd_t fd_;
         handle_t handle_;
-        ymq::YOption options_;
 
-        const char *ip_;
-        const char *port_;
+        std::string ip_;
+        std::string port_;
+        std::string addr_;
 
-        void process_plug();
-        void in_event();
+        void inEvent() override;
         fd_t accept();
 
 
-        TcpListener(const TcpListener &);
-        const TcpListener & operator= (const TcpListener &);
+        TcpListener(const TcpListener &) = delete;
+        const TcpListener & operator= (const TcpListener &) = delete;
     };
 }
 
 
 
 
-#endif //YMQ_YTCPLISTNER_HPP
+#endif //YMQ_TCPLISTNER_HPP

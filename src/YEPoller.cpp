@@ -80,7 +80,7 @@ void ymq::YEPoller::reset_pollout(ymq::YEPoller::handle_t handle) {
 void ymq::YEPoller::start() {
 
     //start a new thread for epolling , this is managed by context
-    ctx_.start_thread(thread_, worker_routine, this);
+    //ctx_.start_thread(thread_, worker_routine, this);
 
 }
 
