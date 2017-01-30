@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <unistd.h>
 #include "YEPoller.hpp"
+#include "YConstPool.hpp"
 
 ymq::YEPoller::YEPoller(const ymq::Context &ctx)
     : ctx_(ctx), stopping_(false){

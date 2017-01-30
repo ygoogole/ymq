@@ -1,7 +1,6 @@
 #ifndef YMQ_IOTHREAD_HPP
 #define YMQ_IOTHREAD_HPP
 
-#include "YObject.hpp"
 #include "Mailbox.hpp"
 #include "Epoller.hpp"
 #include "EpollerBase.hpp"

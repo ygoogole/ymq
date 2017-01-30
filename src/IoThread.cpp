@@ -1,6 +1,5 @@
 #include <sys/errno.h>
 #include "IoThread.hpp"
-#include "YCommand.hpp"
 
 using namespace ymq;
 

@@ -1,4 +1,5 @@
 #include <iostream>
+/*
 #include "YyQueue.hpp"
 #include "YyPipe.hpp"
 #include "YyPipe_base.hpp"
@@ -11,17 +12,17 @@
 #include "YArray.hpp"
 //#include "YAtomicCounter.hpp"
 #include "Signaler.hpp"
-
+*/
 using namespace std;
 //using namespace ymq;
 
 int main() {
-
+/*
     ymq::Context ctx(1);
 
     ymq::Signaler sig;
     sig.send();
-
+*/
     cout << "Hello, World!" << endl;
     return 0;
 }

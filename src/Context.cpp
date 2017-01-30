@@ -89,7 +89,7 @@ SocketBase *Context::create_socket(unsigned type) {
     return socket_.get();
 }
 
-void Context::send_command(uint32_t tid, const YCommand &cmd) {
+void Context::send_command(uint32_t tid) {
 
     //slots_[tid]->send (cmd);
 }

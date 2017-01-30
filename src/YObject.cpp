@@ -69,7 +69,7 @@ void ymq::YObject::send_stop() {
 
 void ymq::YObject::send_command(ymq::YCommand &cmd) {
 
-    ctx_->send_command (cmd.destination->get_tid (), cmd);
+    //ctx_->send_command (cmd.destination->get_tid (), cmd);
 }
 
 ymq::IoThread *ymq::YObject::choose_io_thread() {

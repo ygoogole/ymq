@@ -1,12 +1,8 @@
-//
-// Created by i059483 on 10/26/15.
-//
-
 #ifndef YMQ_TCP_HPP
 #define YMQ_TCP_HPP
 
 #include <stddef.h>
-#include "YCommon.hpp"
+#include "Common.hpp"
 
 namespace ymq{
 

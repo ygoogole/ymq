@@ -1,7 +1,6 @@
 #ifndef YMQ_CONTEXT_HPP
 #define YMQ_CONTEXT_HPP
 
-#include "YConstPool.hpp"
 #include "SocketBase.hpp"
 #include <vector>
 #include <stdint.h>
@@ -17,14 +16,14 @@ namespace ymq{
 
     public:
 
-        Context(int thread_num, int max_thread = ymq::YConstPool::kMaxThreadNumber);
+        Context(int thread_num, int max_thread = kMaxThreadNumber);
         ~Context();
 
         SocketBase* create_socket(unsigned type);
         void set_max_thread ( int max_thread );
         int get_max_thread ();
 
-        void send_command (uint32_t tid, const YCommand &cmd);
+        void send_command (uint32_t tid);//, const YCommand &cmd);
         IoThread* getIoThread();
 
         int thread_count_;
