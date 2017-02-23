@@ -5,6 +5,7 @@
 #include "IoThread.hpp"
 #include "Context.hpp"
 #include "SocketBase.hpp"
+#include "RwQueue.hpp"
 
 using namespace ymq;
 
