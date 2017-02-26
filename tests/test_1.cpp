@@ -6,6 +6,7 @@
 #include "Context.hpp"
 #include "SocketBase.hpp"
 #include "RwQueue.hpp"
+#include "RwPipe.hpp"
 
 using namespace ymq;
 

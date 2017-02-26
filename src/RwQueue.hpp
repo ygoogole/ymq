@@ -1,3 +1,9 @@
+/*
+ * This is a lock free queue, one thread can read while another thread
+ * can write at the same time.
+ *
+ * */
+
 #ifndef RW_QUEUE_
 #define RW_QUEUE_
 
@@ -28,8 +34,7 @@ namespace ymq {
                 } while (head_);
             }
 
-            void push(const T& t) {
-                back() = t;
+            void push() {
                 if (++idx_end_ == N) {
                     // add a new chunk
                     tail_->next = new chunk;
