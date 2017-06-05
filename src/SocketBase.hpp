@@ -4,17 +4,19 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
+#include "Object.hpp"
 #include "EpollerBase.hpp"
 #include "TcpListener.hpp"
 
 namespace ymq {
 
     class Context;
-    class SocketBase : EpollerBase {
+    class SocketBase : public EpollerBase, public Object {
 
         public:
             
-            SocketBase(Context *ctx, unsigned type);
+            SocketBase(Context *ctx, unsigned type, uint32_t tid);
+            virtual ~SocketBase() {}
             int bind(std::string addr);
             int accept();
             void inEvent();

@@ -1,12 +1,11 @@
 #include "SocketBase.hpp"
 #include "Context.hpp"
 
-using namespace ymq;
-
 namespace ymq {
 
-SocketBase::SocketBase(Context *ctx, unsigned type)
-    : ctx_(ctx) {
+SocketBase::SocketBase(Context *ctx, unsigned type, uint32_t tid)
+    : Object(ctx, tid)
+    , ctx_(ctx) {
 }
 
 int SocketBase::bind(std::string addr) {

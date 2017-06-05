@@ -16,6 +16,7 @@ namespace ymq {
 
 TcpListener::TcpListener(IoThread *thread, SocketBase *socket)
     : IoObject(thread)
+    , Object(thread->get_context(), thread->get_tid())
     , socket_(socket)
     , fd_(-1) {
 
@@ -46,7 +47,6 @@ void TcpListener::inEvent() {
     Engine *engine = new (std::nothrow) Engine(io_thread_, socket_, 
             addr_);
     assert(engine);
-    
 
     //create session
     Session *sess = new (std::nothrow) Session(io_thread_, socket_, 

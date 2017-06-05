@@ -2,6 +2,7 @@
 #define YMQ_TCPLISTNER_HPP
 
 #include <string>
+#include "Object.hpp"
 #include "IoObject.hpp"
 #include "IoThread.hpp"
 
@@ -10,7 +11,7 @@ namespace ymq{
     class SocketBase;
     class IoThread;
 
-    class TcpListener : public IoObject {
+    class TcpListener : public IoObject, public Object {
 
     public:
         TcpListener(IoThread *thread, SocketBase *socket );
