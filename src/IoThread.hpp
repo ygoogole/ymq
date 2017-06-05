@@ -1,6 +1,7 @@
 #ifndef YMQ_IOTHREAD_HPP
 #define YMQ_IOTHREAD_HPP
 
+#include "Object.hpp"
 #include "Mailbox.hpp"
 #include "Epoller.hpp"
 #include "EpollerBase.hpp"
@@ -8,17 +9,16 @@
 namespace ymq{
 
     class Context;
-    class IoThread : public EpollerBase {
+    class IoThread : public EpollerBase, public Object {
 
     public:
 
-        IoThread(Context *ctx, uint32_t idx);
-
+        IoThread(Context *ctx, uint32_t tid);
         virtual ~IoThread();
 
         Epoller* getPoller();
+        Mailbox & getMailbox();
 
-        const Mailbox & getMailbox();
         void start();
         void stop();
         void inEvent() override;

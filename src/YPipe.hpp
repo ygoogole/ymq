@@ -1,11 +1,7 @@
-//
-// Created by i059483 on 10/8/15.
-//
-
 #ifndef YMQ_YPIPE_HPP
 #define YMQ_YPIPE_HPP
 
-#include "YObject.hpp"
+#include "Object.hpp"
 #include "YArray.hpp"
 
 namespace ymq{
@@ -13,7 +9,7 @@ namespace ymq{
     //  Note that pipe can be stored in three different arrays.
     //  The array of inbound pipes (1), the array of outbound pipes (2) and
     //  the generic array of pipes to deallocate (3).
-    class YPipe : public YObject, public YArrayItem<1>, public YArrayItem<2>, public YArrayItem<3>{
+    class YPipe : public Object, public YArrayItem<1>, public YArrayItem<2>, public YArrayItem<3>{
 
     private:
 

@@ -4,7 +4,9 @@
 using namespace ymq;
 
 IoObject::IoObject(IoThread *thread)
-    : poller_(nullptr) {
+    : io_thread_(nullptr)
+    , poller_(nullptr)
+    , fd_(0) {
 
     if (thread) {
         poller_ = thread->getPoller();
@@ -17,6 +19,7 @@ IoObject::~IoObject() {
 }
 
 IoObject::handle_t IoObject::addFd(fd_t fd) {
+    fd_ = fd;
     return poller_->addFd(fd, this);
 }
 

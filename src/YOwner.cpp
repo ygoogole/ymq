@@ -1,26 +1,24 @@
-//
-// Created by i059483 on 10/8/15.
-//
-
 #include "YOwner.hpp"
 
-ymq::YOwner::YOwner(ymq::Context *parent, uint32_t tid)
-    :YObject(parent, tid)
+using namespace ymq;
+
+YOwner::YOwner(Context *parent, uint32_t tid)
+    :Object(parent, tid)
     ,owner_(nullptr){
 
 }
 
-ymq::YOwner::YOwner(ymq::IoThread *io_thread)
-    :YObject((YObject *)io_thread)
+YOwner::YOwner(IoThread *io_thread)
+    :Object((Object *)io_thread)
     ,owner_(nullptr){
 
 }
 
-ymq::YOwner::~YOwner() {
+YOwner::~YOwner() {
 
 }
 
-void ymq::YOwner::launch_child(ymq::YOwner *object) {
+void YOwner::launch_child(YOwner *object) {
 
     object->set_owner(this);
 
@@ -29,6 +27,6 @@ void ymq::YOwner::launch_child(ymq::YOwner *object) {
     //send_own(this, object);
 }
 
-void ymq::YOwner::set_owner(ymq::YOwner *owner) {
+void YOwner::set_owner(YOwner *owner) {
     owner_ = owner;
 }

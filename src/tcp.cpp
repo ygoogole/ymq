@@ -4,7 +4,9 @@
 #include <assert.h>
 #include "tcp.hpp"
 
-void ::ymq::tune_tcp_socket(ymq::fd_t s) {
+using namespace ymq;
+
+void ymq::tune_tcp_socket(fd_t s) {
 
     int nodelay = 1;
 
@@ -12,19 +14,19 @@ void ::ymq::tune_tcp_socket(ymq::fd_t s) {
     int rc = setsockopt(s, IPPROTO_TCP, TCP_NODELAY, (char *) &nodelay, sizeof (int));
 }
 
-void ::ymq::set_tcp_send_buffer(ymq::fd_t sockfd, int bufsize) {
+void ymq::set_tcp_send_buffer(fd_t sockfd, int bufsize) {
 
     const int rc = setsockopt (sockfd, SOL_SOCKET, SO_SNDBUF,
                                (char*) &bufsize, sizeof bufsize);
 }
 
-void ::ymq::set_tcp_receive_buffer(ymq::fd_t sockfd, int bufsize) {
+void ymq::set_tcp_receive_buffer(fd_t sockfd, int bufsize) {
 
     const int rc = setsockopt (sockfd, SOL_SOCKET, SO_RCVBUF,
                                (char*) &bufsize, sizeof bufsize);
 }
 
-void ::ymq::tune_tcp_keepalives(ymq::fd_t s, int keepalive, int keepalive_cnt, int keepalive_idle,
+void ymq::tune_tcp_keepalives(fd_t s, int keepalive, int keepalive_cnt, int keepalive_idle,
                                 int keepalive_intvl) {
 
     if (keepalive != -1) {
@@ -48,7 +50,7 @@ void ::ymq::tune_tcp_keepalives(ymq::fd_t s, int keepalive, int keepalive_cnt, i
     }
 }
 
-void ::ymq::tune_tcp_retransmit_timeout(ymq::fd_t sockfd, int timeout) {
+void ymq::tune_tcp_retransmit_timeout(fd_t sockfd, int timeout) {
 
     if (timeout <= 0)
         return;
@@ -59,10 +61,16 @@ void ::ymq::tune_tcp_retransmit_timeout(ymq::fd_t sockfd, int timeout) {
 */
 }
 
-int ::ymq::tcp_write(ymq::fd_t s, const void *data, size_t size) {
-    return 0;
+int ymq::tcp_write(fd_t s, const void *data, size_t size) {
+
+    const ssize_t rc = send(s, data, size, 0);
+
+    return static_cast<int>(rc);
 }
 
-int ::ymq::tcp_read(ymq::fd_t s, void *data, size_t size) {
-    return 0;
+int ymq::tcp_read(fd_t s, void *data, size_t size) {
+
+    const ssize_t rc = recv(s, data, size, 0);
+
+    return static_cast<int>(rc);
 }

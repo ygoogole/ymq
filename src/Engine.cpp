@@ -1,5 +1,8 @@
 #include "Engine.hpp"
+#include "tcp.hpp"
+#include "Msg.h"
 #include <iostream>
+#include "Session.hpp"
 
 namespace ymq {
 
@@ -22,6 +25,16 @@ void Engine::inEvent() {
 #ifndef DISABLE_LOG
     std::cout << "engine inEvent" << std::endl;
 #endif
+
+    char data[kMsgLength];
+
+    int rc = tcp_read(fd_, data, kMsgLength);
+    if (rc > 0) {
+        Msg msg;
+        msg.Init();
+        msg.setData(data, rc);
+        session_->flush(msg);
+    }
 
 }
 

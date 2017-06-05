@@ -33,6 +33,7 @@ namespace ymq{
         void outEvent() override;
 
         IoThread *io_thread_;
+        fd_t fd_;
 
     private:
 

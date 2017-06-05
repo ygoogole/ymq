@@ -5,8 +5,9 @@ using namespace ymq;
 
 namespace ymq {
 
-IoThread::IoThread( Context *ctx, uint32_t idx)
+IoThread::IoThread( Context *ctx, uint32_t tid)
     : EpollerBase()
+    , Object(ctx, tid)
     , ctx_(ctx)
 {
     epoller_ = new (std::nothrow) Epoller();
@@ -22,8 +23,8 @@ IoThread::~IoThread() {
 }
 
 void IoThread::inEvent() {
-/*
-    YCommand cmd;
+
+    Command cmd;
     int rc = mailbox_.recv(&cmd, 0);
 
     while (rc == 0 || errno == EINTR){
@@ -34,14 +35,13 @@ void IoThread::inEvent() {
 
         rc = mailbox_.recv(&cmd, 0);
     }
-*/
 }
 
 Epoller *IoThread::getPoller() {
     return epoller_;
 }
 
-const Mailbox& IoThread::getMailbox() {
+Mailbox& IoThread::getMailbox() {
     return mailbox_;
 }
 

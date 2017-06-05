@@ -3,6 +3,9 @@
 
 #include <string>
 #include "IoObject.hpp"
+#include "Msg.h"
+#include "RwPipe.hpp"
+#include "YConstPool.hpp"
 
 namespace ymq {
 
@@ -18,11 +21,13 @@ namespace ymq {
         void setEngine(Engine *e) {
             engine_ = e;
         }
+        void flush(Msg msg);
 
     private:
         SocketBase *socket_;
         std::string addr_;
         Engine *engine_;
+        RwPipe<Msg, YConstPool::kCmdPipeGranularity> *pipe_;
     };
 }
 

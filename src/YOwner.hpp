@@ -1,11 +1,7 @@
-//
-// Created by i059483 on 10/8/15.
-//
-
 #ifndef YMQ_YOWNER_HPP
 #define YMQ_YOWNER_HPP
 
-#include "YObject.hpp"
+#include "Object.hpp"
 //#include "Context.hpp"
 
 namespace ymq {
@@ -13,7 +9,7 @@ namespace ymq {
     class IoThread;
     class Context;
 
-    class YOwner : public YObject {
+    class YOwner : public Object {
 
     public:
 

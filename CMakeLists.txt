@@ -20,7 +20,7 @@ file(GLOB SRCS
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 
-add_executable(ymq ${SRCS})
+add_executable(ymq ${SRCS} src/Msg.cpp src/Msg.h)
 
 #add_definitions(-D_PTHREADS)
 
