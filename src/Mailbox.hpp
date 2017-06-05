@@ -3,6 +3,9 @@
 
 #include "Common.hpp"
 #include "Signaler.hpp"
+#include "Command.hpp"
+#include "RwPipe.hpp"
+#include "YConstPool.hpp"
 #include <memory>
 
 namespace ymq{
@@ -14,10 +17,8 @@ namespace ymq{
         ~Mailbox();
         fd_t getFd();
 
-/*
-        void send(const ymq::YCommand &cmd);
-        int recv(ymq::YCommand *cmd, int timeout);
-*/
+        void send(ymq::Command &cmd);
+        int recv(ymq::Command *cmd, int timeout);
 
     private:
 /*
@@ -27,9 +28,11 @@ namespace ymq{
 
         YMutex sync_;
 
-        bool active_;
 */
+
+        RwPipe<Command, YConstPool::kCmdPipeGranularity> pipe_;
         Signaler signaler_;
+        bool active_;
 
         Mailbox(const Mailbox&) = delete;
         const Mailbox& operator=(const Mailbox&) = delete;

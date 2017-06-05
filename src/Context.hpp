@@ -2,6 +2,7 @@
 #define YMQ_CONTEXT_HPP
 
 #include "SocketBase.hpp"
+#include "Command.hpp"
 #include <vector>
 #include <stdint.h>
 #include <memory>
@@ -23,7 +24,7 @@ namespace ymq{
         void set_max_thread ( int max_thread );
         int get_max_thread ();
 
-        void send_command (uint32_t tid);//, const YCommand &cmd);
+        void send_command (uint32_t tid, Command &cmd);
         IoThread* getIoThread();
 
         int thread_count_;

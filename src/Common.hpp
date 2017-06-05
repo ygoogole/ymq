@@ -12,6 +12,7 @@ namespace ymq{
     typedef int fd_t;
     const static unsigned kMaxIoEvent = 256;
     const static unsigned kMaxThreadNumber = 1023;
+    const static unsigned kMsgLength = 1024;
 }
 
 

@@ -4,6 +4,7 @@
 #include "Context.hpp"
 #include "IoThread.hpp"
 #include "SocketBase.hpp"
+#include "Mailbox.hpp"
 
 using namespace ymq;
 
@@ -36,12 +37,20 @@ IoThread * Context::getIoThread() {
 
 SocketBase *Context::create_socket(unsigned type) {
 
-    auto io_thread = std::make_shared<IoThread>(this, io_threads_.size());
-    io_threads_.push_back(io_thread);
-    io_thread->start();
+    slot_count_ = thread_count_ + max_thread_;
+    slots_ = static_cast<Mailbox **>(malloc(sizeof(Mailbox *) * slot_count_));
+    assert (slots_);
 
-    socket_.reset(new (std::nothrow) SocketBase(this, 0));
+    for (int i = 0; i < thread_count_; ++i) {
 
+        auto io_thread = std::make_shared<IoThread>(this, i);
+        io_threads_.push_back(io_thread);
+        io_thread->start();
+        slots_[i] = &(io_thread->getMailbox());
+    }
+
+    // TODO: use thread 0 for now
+    socket_.reset(new (std::nothrow) SocketBase(this, 0, 0));
 /*
     // create socket, io thread and start polling
 
@@ -89,11 +98,10 @@ SocketBase *Context::create_socket(unsigned type) {
     return socket_.get();
 }
 
-void Context::send_command(uint32_t tid) {
-
-    //slots_[tid]->send (cmd);
+void Context::send_command(uint32_t tid, Command &cmd) {
+    slots_[tid]->send(cmd);
 }
 
 IoThread *Context::choose_io_thread() {
-    return nullptr; 
+    return io_threads_.empty() ? nullptr : io_threads_[0].get();
 }

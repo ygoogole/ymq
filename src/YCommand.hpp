@@ -26,23 +26,18 @@ namespace ymq{
         union args_t{
 
             struct {
-
             } plug;
 
             struct {
-
             } bind;
 
             struct {
-
             } own;
 
             struct {
-
             } stop;
 
             struct {
-
             } attach;
 
 
